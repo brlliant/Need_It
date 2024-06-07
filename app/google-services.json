@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "125242353418",
+    "project_id": "need-it-bbc17",
+    "storage_bucket": "need-it-bbc17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125242353418:android:b3048390adafecede67cf3",
+        "android_client_info": {
+          "package_name": "com.example.needit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkxdBQVcLyNR81NQP4O1EoQCBnCtU_tDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
