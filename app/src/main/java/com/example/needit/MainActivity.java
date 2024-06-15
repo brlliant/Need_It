@@ -2,11 +2,10 @@ package com.example.needit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -16,29 +15,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "HomeActivity";
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private TextView welcomeTextView;
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
-    private ImageView profileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         // Initialize UI elements
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -54,48 +46,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         // Set up the hamburger menu
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        welcomeTextView = findViewById(R.id.welcome_text);
-        profileImageView = findViewById(R.id.profile_image);
-
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            loadUserData(currentUser.getUid());
-        } else {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
-        }
-
-        // Set the onClick listener for the profile image to open the ProfileCustomizationActivity
-        profileImageView.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileCustomizationActivity.class);
-            startActivity(intent);
-        });
+        // Check if user is authenticated in background thread
+        checkAuthentication();
 
         // Set up Bottom Navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
-                // Stay on the Home activity
-                return true;
+                selectedFragment = new HomeFragment();
             } else if (itemId == R.id.navigation_browse) {
-                startActivity(new Intent(HomeActivity.this, BrowseActivity.class));
-                return true;
+                selectedFragment = new BrowseFragment();
             } else if (itemId == R.id.navigation_community) {
-                startActivity(new Intent(HomeActivity.this, CommunityActivity.class));
-                return true;
+                selectedFragment = new CommunityFragment();
             }
-            return false;
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+
+            return true;
         });
 
-        // Set the selected item in the bottom navigation bar
-        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        // Set the default fragment
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
 
         // Handle back press
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -110,6 +95,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    private void checkAuthentication() {
+        new Thread(() -> {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser == null) {
+                showToastOnUiThread("User not logged in");
+            } else {
+                checkEmailVerification(currentUser);
+            }
+        }).start();
+    }
+
+    private void checkEmailVerification(FirebaseUser currentUser) {
+        if (currentUser.isEmailVerified()) {
+            // User is signed in and email is verified
+            //no action needed
+
+        } else {
+            // User is not signed in or email is not verified
+            mAuth.signOut();
+            showToastOnUiThread("Please verify your email to access the Home page.");
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+    }
+
+    private void showToastOnUiThread(String message) {
+        runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show());
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
@@ -118,8 +132,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_signout) {
-            signOut();
+        if (item.getItemId() == R.id.action_notifications) {
+            showNotificationsPopup();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -127,8 +141,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_signout) {
+        int id = item.getItemId();
+        if (id == R.id.drawer_profile_customization) {
+            // Start the ProfileCustomizationActivity
+            Intent intent = new Intent(MainActivity.this, ProfileCustomizationActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.action_signout) {
             signOut();
+        }
+        else if (id == R.id.settings)
+        {
+            //Start the settings activity
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -137,45 +162,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        checkEmailVerification();
-    }
-
-    private void checkEmailVerification() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null && currentUser.isEmailVerified()) {
-            // User is signed in and email is verified
-        } else {
-            // User is not signed in or email is not verified
-            FirebaseAuth.getInstance().signOut();
-            Toast.makeText(this, "Please verify your email to access the Home page.", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-    }
-
-    private void loadUserData(String uid) {
-        DocumentReference docRef = db.collection("users").document(uid);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    String name = document.getString("name");
-                    welcomeTextView.setText("Welcome, " + name + "!");
-                } else {
-                    Log.d(TAG, "No such document");
-                    Toast.makeText(HomeActivity.this, "No user data found", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
-                Toast.makeText(HomeActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Recheck authentication on activity start
+        checkAuthentication();
     }
 
     private void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        mAuth.signOut();
+        Intent intent = new Intent(MainActivity.this, IntroActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void showNotificationsPopup() {
+        // Inflate the popup layout
+        View popupView = getLayoutInflater().inflate(R.layout.popup_notifications, null);
+        // Create the popup window
+        PopupWindow popupWindow = new PopupWindow(popupView, Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT, true);
+        // Show the popup window
+        popupWindow.showAsDropDown(findViewById(R.id.action_notifications), 0, 0);
     }
 }

@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Need It</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="signup">SignUp</string>
+    <string name="signout">Sign out</string>
+    <string name="password">Password</string>
+    <string name="google_app_id" translatable="false">1:699411946114:android:c783d2d7fbbf18f2d0b29b</string>
+    <string name="default_web_client_id" translatable="false">699411946114-gi45bhom9m31n881l0glujccqdjueugg.apps.googleusercontent.com</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="forgot_pass">Forgot Password ? </string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="d_o_b">Date Of Birth</string>
+    <string name="name">Name</string>
+    <string name="show_pass">Show Password</string>
+    <string name="hide_pass">Hide Password</string>
+    <string name="update">Update</string>
+    <string name="gender">Gender</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
