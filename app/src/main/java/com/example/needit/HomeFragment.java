@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment {
                 intent = new Intent(getActivity(), SettingsActivity.class);
                 startActivity(intent);
                 break;
-            case "Sign out":
+            case "Sign out": //Replace it wwith anything its just testing for the git.
 
             default:
                 Toast.makeText(getActivity(), "Unknown option selected", Toast.LENGTH_SHORT).show();
