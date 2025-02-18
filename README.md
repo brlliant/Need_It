@@ -46,7 +46,7 @@ No personal data is shared without consent.
 
 Support
 
-For any issues or feature requests, contact our support team at support@assistivetech.com.
+For any issues or feature requests, contact our support team at pulsecode.devan@gmail.com.
 
 License
 
