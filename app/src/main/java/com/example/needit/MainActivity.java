@@ -1,19 +1,39 @@
 package com.example.needit;
 
+<<<<<<< HEAD
 import android.content.Intent;
 import android.os.Bundle;
+=======
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+>>>>>>> origin/master
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+<<<<<<< HEAD
+=======
+import androidx.core.content.ContextCompat;
+import androidx.credentials.ClearCredentialStateRequest;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+
+>>>>>>> origin/master
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+<<<<<<< HEAD
+=======
+import androidx.credentials.exceptions.ClearCredentialException;
+>>>>>>> origin/master
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -168,9 +188,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void signOut() {
         mAuth.signOut();
+<<<<<<< HEAD
         Intent intent = new Intent(MainActivity.this, IntroActivity.class);
         startActivity(intent);
         finish();
+=======
+        // Clear credential state
+        ClearCredentialStateRequest clearRequest = new ClearCredentialStateRequest();
+        CredentialManager credentialManager = CredentialManager.create(this);
+
+        credentialManager.clearCredentialStateAsync(
+                clearRequest,
+                null,
+                ContextCompat.getMainExecutor(this),
+                new CredentialManagerCallback<>() {
+                    @Override
+                    public void onResult(Void result) {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+                            startActivity(intent);
+                            finish();
+                        });
+                    }
+
+                    @Override
+                    public void onError(ClearCredentialException e) {
+                        Log.e(TAG, "Clear credentials failed", e);
+                    }
+                }
+        );
+>>>>>>> origin/master
     }
 
     private void showNotificationsPopup() {

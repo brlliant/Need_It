@@ -9,7 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+<<<<<<< HEAD
 public class CommunityFragment extends Fragment {
+=======
+public class CommunityFragment extends Fragment
+{
+>>>>>>> origin/master
 
     @Nullable
     @Override

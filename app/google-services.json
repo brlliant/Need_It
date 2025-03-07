@@ -1,8 +1,14 @@
 {
   "project_info": {
     "project_number": "125242353418",
+<<<<<<< HEAD
     "project_id": "need-it-bbc17",
     "storage_bucket": "need-it-bbc17.appspot.com"
+=======
+    "firebase_url": "https://need-it-bbc17-default-rtdb.firebaseio.com",
+    "project_id": "need-it-bbc17",
+    "storage_bucket": "need-it-bbc17.firebasestorage.app"
+>>>>>>> origin/master
   },
   "client": [
     {

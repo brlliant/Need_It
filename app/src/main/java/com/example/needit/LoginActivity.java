@@ -38,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize UI elements
         emailEditText = findViewById(R.id.email);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
         passwordEditText = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
         forgotPasswordText = findViewById(R.id.forgot_password);

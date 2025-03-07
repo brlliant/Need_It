@@ -4,6 +4,10 @@
 
     <item
         android:id="@+id/drawer_back"
+<<<<<<< HEAD
+=======
+        android:title=" "
+>>>>>>> origin/master
         android:icon="@drawable/ic_back"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
@@ -13,19 +17,44 @@
         android:title="profile"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
     <item
         android:id="@+id/drawer_profile_customization"
         android:title="Profile Customization"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item
+<<<<<<< HEAD
+=======
+        android:id="@+id/action_emergency"
+        android:title="Emergency/SOS"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
+>>>>>>> origin/master
         android:id="@+id/settings"
         android:title="Settings"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
     <item
+<<<<<<< HEAD
+=======
+        android:id="@+id/action_feedback"
+        android:title= "Feedback"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+    <item
+>>>>>>> origin/master
         android:id="@+id/action_signout"
         android:title="Sign Out"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 </menu>
