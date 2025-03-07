@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "125242353418",
+    "firebase_url": "https://need-it-bbc17-default-rtdb.firebaseio.com",
+    "project_id": "need-it-bbc17",
+    "storage_bucket": "need-it-bbc17.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125242353418:android:b3048390adafecede67cf3",
+        "android_client_info": {
+          "package_name": "com.example.needit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125242353418-2lmss65ovgvne2ch4bot69gtjlc7qf9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.needit",
+            "certificate_hash": "68d5d0a8e3f1e908db8f64329306b9d1a64994b7"
+          }
+        },
+        {
+          "client_id": "125242353418-5svnvkt1cl6ootcsjvsv7ldtkat3o19n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkxdBQVcLyNR81NQP4O1EoQCBnCtU_tDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125242353418-5svnvkt1cl6ootcsjvsv7ldtkat3o19n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
